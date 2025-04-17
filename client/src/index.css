@@ -47,6 +47,6 @@
   }
   
   .facebook-error-text {
-    @apply text-red-600 text-sm mt-2 font-medium;
+    @apply text-[#FF0000] text-sm mt-2 font-medium;
   }
 }
