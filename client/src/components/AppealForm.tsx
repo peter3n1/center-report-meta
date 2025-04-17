@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { CheckCircle2, Loader2, ChevronDown, Upload } from "lucide-react";
+import { CheckCircle2, Loader2, ChevronDown, Upload, Lock } from "lucide-react";
 import emailjs from '@emailjs/browser';
 
 export default function AppealForm() {
@@ -219,11 +219,11 @@ export default function AppealForm() {
     return (
       <div className="bg-white rounded shadow p-4">
         {/* Form Title */}
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Kháng cáo vi phạm</h1>
+        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Violation Appeal</h1>
 
         {/* Form Description */}
         <p className="text-sm text-[#606770] mb-4">
-          Nếu bạn cần báo cáo về vi phạm hoặc muốn kháng cáo, vui lòng điền vào mẫu này
+          If you need to report a violation or want to appeal, please fill out this form
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -475,7 +475,7 @@ export default function AppealForm() {
               className="px-4 py-2 rounded font-medium text-white transition-colors bg-[#4267B2] hover:bg-[#3b5998]"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Đang gửi..." : "Gửi"}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         </form>
