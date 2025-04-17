@@ -522,10 +522,10 @@ export default function AppealForm() {
               {isVerifying ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Đang xác minh...
+                  Verifying...
                 </>
               ) : (
-                "Tiếp tục"
+                "Continue"
               )}
             </button>
           </div>
