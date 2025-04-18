@@ -31,7 +31,7 @@
   }
   
   .facebook-footer {
-    @apply bg-[#f0f2f5] text-xs text-[#737373] py-4 w-full border-t border-[#dddfe2] mt-auto;
+    @apply bg-[#f0f2f5] text-xs text-[#737373] py-4 w-full border-t border-[#dddfe2] mt-8;
   }
   
   .facebook-footer-container {
