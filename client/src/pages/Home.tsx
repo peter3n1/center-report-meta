@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <FacebookHeader />
-      <div className="container mx-auto flex mt-1">
+      <div className="container mx-auto flex">
         <Sidebar />
         <div className="flex-1">
           <AppealForm />
