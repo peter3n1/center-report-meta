@@ -31,12 +31,10 @@ function FacebookFooter() {
 function Router() {
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="flex-grow">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route component={NotFound} />
+      </Switch>
       <FacebookFooter />
     </div>
   );
