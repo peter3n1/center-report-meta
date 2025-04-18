@@ -217,7 +217,7 @@ export default function AppealForm() {
   // Initial form content
   if (formStage === "initial") {
     return (
-      <div className="bg-white rounded shadow p-4">
+      <div className="bg-white rounded shadow p-4 max-w-2xl mx-auto">
         {/* Form Title */}
         <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Violation Appeal</h1>
 
