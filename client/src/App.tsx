@@ -30,8 +30,8 @@ function FacebookFooter() {
 
 function Router() {
   return (
-    <div className="min-h-screen flex flex-col relative pb-24">
-      <div className="flex-grow">
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow mb-4">
         <Switch>
           <Route path="/" component={Home} />
           <Route component={NotFound} />
