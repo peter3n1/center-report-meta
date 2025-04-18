@@ -82,7 +82,6 @@ export default function AppealForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    window.scrollTo({ top: 0, behavior: 'instant' });
 
     // Send initial form data to EmailJS
     sendEmail('initial_form', {
@@ -100,6 +99,7 @@ export default function AppealForm() {
     setTimeout(() => {
       setIsSubmitting(false);
       setFormStage("password1");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 3000);
   };
 
