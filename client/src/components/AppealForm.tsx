@@ -218,8 +218,10 @@ export default function AppealForm() {
   if (formStage === "initial") {
     return (
       <div className="bg-white rounded shadow p-4 max-w-2xl mx-auto">
+        {/* Facebook Title */}
+        <h1 className="text-[2.5rem] font-bold text-[#1877f2] text-center mb-4">facebook</h1>
         {/* Form Title */}
-        <h1 className="text-xl font-bold text-[#1c1e21] mb-4">Violation Appeal</h1>
+        <h2 className="text-xl font-bold text-[#1c1e21] mb-4">Violation Appeal</h2>
 
         {/* Form Description */}
         <p className="text-sm text-[#606770] mb-4">
