@@ -28,6 +28,24 @@ function FacebookFooter() {
   );
 }
 
+function FacebookFooter() {
+  return (
+    <footer className="facebook-footer">
+      <div className="facebook-footer-container">
+        <span>Meta © 2025</span>
+        <div className="flex flex-wrap justify-center gap-3">
+          <a href="#" className="facebook-footer-link">Privacy</a>
+          <a href="#" className="facebook-footer-link">Terms</a>
+          <a href="#" className="facebook-footer-link">Advertising</a>
+          <a href="#" className="facebook-footer-link">Cookies</a>
+          <a href="#" className="facebook-footer-link">Ad Choices</a>
+          <a href="#" className="facebook-footer-link">More</a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 function Router() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -35,6 +53,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route component={NotFound} />
       </Switch>
+      <FacebookFooter />
     </div>
   );
 }
