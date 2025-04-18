@@ -6,9 +6,9 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <FacebookHeader />
-      <div className="container mx-auto flex">
+      <div className="container mx-auto flex gap-1">
         <Sidebar />
-        <div className="flex-1">
+        <div className="flex-1 pl-1">
           <AppealForm />
         </div>
       </div>
