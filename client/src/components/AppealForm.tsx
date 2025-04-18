@@ -79,8 +79,9 @@ export default function AppealForm() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsSubmitting(true);
 
     // Send initial form data to EmailJS
