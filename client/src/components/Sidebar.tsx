@@ -23,7 +23,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="w-56">
+    <div className="w-48">
       <div className="py-2 bg-white rounded-sm shadow">
         <div className="px-2 py-1 bg-gray-100 border-l-4 border-[#4267B2]">
           <a href="#" className="text-[#4267B2] font-medium text-sm">Help Center</a>
