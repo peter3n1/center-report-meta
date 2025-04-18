@@ -41,20 +41,23 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
+        {/* Hiển thị English góc phải trên */}
         <div
-  style={{
-    position: "absolute",
-    top: "16px",
-    right: "16px",
-    fontSize: "14px",
-    color: "#1877f2",
-    fontWeight: "500",
-  }}
->
-  English (US)
-</div>
-<Router />
+          style={{
+            position: "absolute",
+            top: "16px",
+            right: "16px",
+            fontSize: "14px",
+            color: "#1877f2",
+            fontWeight: "500",
+            zIndex: 9999,
+          }}
+        >
+          English (US)
+        </div>
+
+        <Toaster />
+        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
